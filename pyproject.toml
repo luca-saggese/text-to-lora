@@ -28,7 +28,6 @@ dependencies = [
     "evalplus",
     "gradio>=5.29.0",
     "vllm==0.5.4",
-    "flash-attn",
 ]
 
 [build-system]
@@ -48,6 +47,3 @@ typeCheckingMode = "off"
 
 [tool.uv.sources]
 evalplus = { git = "https://github.com/evalplus/evalplus", rev = "1895d2f6aa8895044a7cf69defc24bd57695e885" }
-
-[tool.uv.extra-build-dependencies]
-flash-attn = ["torch"]
