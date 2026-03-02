@@ -964,6 +964,7 @@ def load_hypermod_checkpoint(checkpoint_path, device):
         args.model_dir,
         train=False,
         requires_grad=False,
+        use_flash_attn=False,
         peft_config=peft_config,
         model_kwargs={"output_hidden_states": True, "output_attentions": False},
         device=device,
