@@ -16,8 +16,8 @@ WORKDIR /app
 
 RUN python -m pip install --no-cache-dir --upgrade pip uv
 
-COPY pyproject.toml uv.lock setup.py README.md /app/
-RUN uv sync --frozen
+COPY pyproject.toml setup.py README.md /app/
+RUN uv sync
 
 COPY . /app
 RUN uv pip install --no-deps /app/src/fishfarm
