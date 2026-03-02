@@ -40,6 +40,8 @@ docker run --rm -it \
   text-to-lora:latest
 ```
 
+**Nota importante:** La WebUI ha problemi di compatibilità di dipendenze (`pyairports==0.0.1` su PyPI è broken e incompleta). Usa il watcher o la generazione LoRA via CLI che funzionano correttamente.
+
 ## Eseguire comandi specifici
 
 ### Web UI
@@ -100,6 +102,7 @@ docker run --rm -it \
 ```bash
 rm -rf .venv
 docker run --rm -it --gpus all -v "$(pwd)":/app -w /app text-to-lora:latest uv sync
+docker run --rm -it --gpus all -v "$(pwd)":/app -w /app text-to-lora:latest uv pip install "pyairports==2.1.1"
 ```
 
 Poi rilancia il comando `uv run ...`.
