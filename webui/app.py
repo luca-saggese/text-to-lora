@@ -275,7 +275,7 @@ def build_demo():
                             }
 
                 # Chat UI
-                chat = gr.Chatbot(type="messages", height=800)
+                chat = gr.Chatbot(height=800)
                 msg = gr.Textbox(label="Message")
                 gr.Markdown(FOOTER)
 
