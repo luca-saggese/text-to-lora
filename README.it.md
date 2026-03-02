@@ -89,17 +89,11 @@ docker run --rm -it \
 - `flash-attn` non viene installato automaticamente nel container perché il wheel dipende dalla combinazione CUDA/PyTorch/architettura; se ti serve, installalo manualmente con un wheel compatibile.
 - Se non hai GPU NVIDIA disponibile, alcuni script potrebbero non funzionare o risultare molto lenti.
 - Se vedi `ModuleNotFoundError: No module named 'fishfarm.models'`, ricostruisci l'immagine con `--no-cache`.
-- Se vedi `ModuleNotFoundError` per librerie Python (es. `colorlog`, `pyairports`), rigenera l'ambiente locale montato:
+- Se vedi `ModuleNotFoundError` per librerie Python (es. `colorlog`), rigenera l'ambiente locale montato:
 
 ```bash
 rm -rf .venv
 docker run --rm -it --gpus all -v "$(pwd)":/app -w /app text-to-lora:latest uv sync
-```
-
-- Se l'errore su `pyairports` persiste, forza il pin corretto nel venv locale:
-
-```bash
-docker run --rm -it --gpus all -v "$(pwd)":/app -w /app text-to-lora:latest uv pip install "pyairports==2.1.1"
 ```
 
 Poi rilancia il comando `uv run ...`.

@@ -4,11 +4,10 @@ version = "0.0.1"
 authors = [{ name = "Rujikorn Charakorn" }]
 description = "The code repository for the paper 'Text-to-LoRA: Instant Transformer Adaption' (ICML 2025)."
 readme = "README.md"
-requires-python = ">= 3.10"
+requires-python = ">=3.10,<3.13"
 dependencies = [
     "transformers==4.46.2",
     "colorlog",
-    "pyairports==2.1.1",
     "huggingface_hub[cli]",
     "peft",
     "accelerate",
