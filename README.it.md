@@ -89,6 +89,14 @@ docker run --rm -it \
 - `flash-attn` non viene installato automaticamente nel container perché il wheel dipende dalla combinazione CUDA/PyTorch/architettura; se ti serve, installalo manualmente con un wheel compatibile.
 - Se non hai GPU NVIDIA disponibile, alcuni script potrebbero non funzionare o risultare molto lenti.
 - Se vedi `ModuleNotFoundError: No module named 'fishfarm.models'`, ricostruisci l'immagine con `--no-cache`.
+- Se vedi `ModuleNotFoundError` per librerie Python (es. `colorlog`), rigenera l'ambiente locale montato:
+
+```bash
+rm -rf .venv
+docker run --rm -it --gpus all -v "$(pwd)":/app -w /app text-to-lora:latest uv sync
+```
+
+Poi rilancia il comando `uv run ...`.
 
 ## File aggiunti
 
