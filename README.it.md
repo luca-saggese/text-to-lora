@@ -127,9 +127,8 @@ docker run --rm -it \
 ## Note pratiche
 
 - La prima esecuzione può essere lenta: i modelli vengono scaricati e messi in cache.
-- `flash-attn` non viene installato automaticamente nel container perché il wheel dipende dalla combinazione CUDA/PyTorch/architettura; se ti serve, installalo manualmente con un wheel compatibile.
+- `flash-attn` viene installato automaticamente nel container per ottimizzazioni GPU.
 - Se non hai GPU NVIDIA disponibile, alcuni script potrebbero non funzionare o risultare molto lenti.
-- Se vedi `ModuleNotFoundError: No module named 'fishfarm.models'`, ricostruisci l'immagine con `--no-cache`.
 - Se vedi `ModuleNotFoundError` per librerie Python (es. `colorlog`), rigenera l'ambiente locale montato:
 
 ```bash

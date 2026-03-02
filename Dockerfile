@@ -19,6 +19,9 @@ RUN python -m pip install --no-cache-dir --upgrade pip uv
 COPY pyproject.toml setup.py README.md /app/
 RUN uv sync
 
+# Install flash-attn for GPU optimization
+RUN uv pip install https://github.com/Dao-AILab/flash-attention/releases/download/v2.6.3/flash_attn-2.6.3+cu123torch2.3cxx11abiFALSE-cp310-cp310-linux_x86_64.whl
+
 COPY . /app
 RUN uv pip install --no-deps /app/src/fishfarm
 
