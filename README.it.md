@@ -16,6 +16,12 @@ Dalla root del repository:
 docker build -t text-to-lora:latest .
 ```
 
+Se hai già costruito l'immagine prima di modifiche al `Dockerfile`, ricostruiscila:
+
+```bash
+docker build --no-cache -t text-to-lora:latest .
+```
+
 ## Avvio del container
 
 Il `Dockerfile` avvia di default il watcher:
@@ -82,6 +88,7 @@ docker run --rm -it \
 - La prima esecuzione può essere lenta: i modelli vengono scaricati e messi in cache.
 - `flash-attn` non viene installato automaticamente nel container perché il wheel dipende dalla combinazione CUDA/PyTorch/architettura; se ti serve, installalo manualmente con un wheel compatibile.
 - Se non hai GPU NVIDIA disponibile, alcuni script potrebbero non funzionare o risultare molto lenti.
+- Se vedi `ModuleNotFoundError: No module named 'fishfarm.models'`, ricostruisci l'immagine con `--no-cache`.
 
 ## File aggiunti
 

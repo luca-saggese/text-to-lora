@@ -22,9 +22,8 @@ RUN uv sync --frozen
 COPY . /app
 RUN uv pip install --no-deps /app/src/fishfarm
 
-ENV PYTHONPATH=/app/src
+ENV PYTHONPATH=/app/src:/app/src/fishfarm
 ENV HF_HOME=/app/.cache/huggingface
-ENV TRANSFORMERS_CACHE=/app/.cache/huggingface
 ENV HF_HUB_ENABLE_HF_TRANSFER=1
 
 CMD ["uv", "run", "python", "watcher.py"]
