@@ -130,6 +130,7 @@ def initialize_model(
         model_dir,
         torch_dtype=torch.bfloat16 if torch.cuda.is_available() else torch.float32,
         device_map="auto",
+        attn_implementation="eager",
     )
     model = PeftModel(model, peft_config)
     return model, tokenizer
