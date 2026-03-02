@@ -436,4 +436,4 @@ if __name__ == "__main__":
     os.environ["TMPDIR"] = "/tmp"
     os.environ["GRADIO_TEMP_DIR"] = "/tmp"
     demo = build_demo()
-    demo.queue().launch(allowed_paths=["/tmp/gen_lora"], show_error=True, debug=True, share=True)
+    demo.queue().launch(allowed_paths=["/tmp/gen_lora"], show_error=True, debug=True, share=True, server_name="0.0.0.0")
