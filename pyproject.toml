@@ -48,3 +48,6 @@ typeCheckingMode = "off"
 
 [tool.uv.sources]
 evalplus = { git = "https://github.com/evalplus/evalplus", rev = "1895d2f6aa8895044a7cf69defc24bd57695e885" }
+
+[tool.uv.extra-build-dependencies]
+flash-attn = ["torch"]
