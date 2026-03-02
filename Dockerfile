@@ -18,7 +18,8 @@ RUN python -m pip install --no-cache-dir --upgrade pip uv
 
 COPY pyproject.toml setup.py README.md /app/
 RUN uv sync
-RUN uv pip list | grep pyairports
+RUN uv lock
+RUN uv pip install pyairports
 
 COPY . /app
 RUN uv pip install --no-deps /app/src/fishfarm

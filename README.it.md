@@ -22,6 +22,12 @@ Se hai già costruito l'immagine prima di modifiche al `Dockerfile`, ricostruisc
 docker build --no-cache -t text-to-lora:latest .
 ```
 
+Dopo il primo build, aggiorna il `uv.lock` nel repository per sincronizzare le dipendenze:
+
+```bash
+docker run --rm -it --gpus all -v "$(pwd)":/app -w /app text-to-lora:latest uv lock
+```
+
 ## Avvio del container
 
 Il `Dockerfile` avvia di default il watcher:
