@@ -28,6 +28,7 @@ dependencies = [
     "evalplus",
     "gradio>=5.29.0",
     "vllm==0.5.4",
+    "flash-attn",
 ]
 
 [build-system]
