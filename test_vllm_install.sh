@@ -11,10 +11,18 @@ echo "=========================================="
 ARCH=$(uname -m)
 echo "Architecture: $ARCH"
 
+# Detect if uv is available, otherwise use pip
+if command -v uv &> /dev/null; then
+    PIP="uv pip"
+else
+    PIP="pip"
+fi
+echo "Using: $PIP"
+
 if [ "$ARCH" = "aarch64" ]; then
     echo ""
     echo "Installing build dependencies..."
-    uv pip install setuptools_scm wheel packaging ninja cmake
+    $PIP install setuptools_scm wheel packaging ninja cmake
     
     echo ""
     echo "=========================================="
@@ -32,13 +40,13 @@ if [ "$ARCH" = "aarch64" ]; then
     cd /tmp/vllm-main
     
     echo "Installing dependencies..."
-    uv pip install -r requirements-build.txt || true
-    uv pip install -r requirements-common.txt || true
-    uv pip install -r requirements-cuda.txt || true
+    $PIP install -r requirements-build.txt || true
+    $PIP install -r requirements-common.txt || true
+    $PIP install -r requirements-cuda.txt || true
     
     echo ""
     echo "Building vllm from source..."
-    VLLM_INSTALL_PUNICA_KERNELS=1 MAX_JOBS=2 uv pip install -e . --no-build-isolation
+    VLLM_INSTALL_PUNICA_KERNELS=1 MAX_JOBS=2 $PIP install -e . --no-build-isolation
     
     echo ""
     echo "=========================================="
@@ -48,7 +56,7 @@ if [ "$ARCH" = "aarch64" ]; then
     
 else
     echo "x86_64 architecture - installing prebuilt vllm 0.5.4"
-    uv pip install vllm==0.5.4
+    $PIP install vllm==0.5.4
     python -c "import vllm; print(f'vLLM version: {vllm.__version__}')"
 fi
 
