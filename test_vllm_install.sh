@@ -34,6 +34,10 @@ if [ "$ARCH" = "aarch64" ]; then
     $PIP install setuptools_scm wheel packaging ninja cmake
     
     echo ""
+    echo "Installing PyTorch and basic dependencies..."
+    $PIP install torch torchvision numpy
+    
+    echo ""
     echo "=========================================="
     echo "Option 1: Try vllm 0.6.4.post1 with git install"
     echo "=========================================="
@@ -49,9 +53,15 @@ if [ "$ARCH" = "aarch64" ]; then
     cd /tmp/vllm-main
     
     echo "Installing dependencies..."
-    $PIP install -r requirements-build.txt || true
-    $PIP install -r requirements-common.txt || true
-    $PIP install -r requirements-cuda.txt || true
+    if [ -f requirements-build.txt ]; then
+        $PIP install -r requirements-build.txt
+    fi
+    if [ -f requirements-common.txt ]; then
+        $PIP install -r requirements-common.txt
+    fi
+    if [ -f requirements-cuda.txt ]; then
+        $PIP install -r requirements-cuda.txt
+    fi
     
     echo ""
     echo "Building vllm from source..."
