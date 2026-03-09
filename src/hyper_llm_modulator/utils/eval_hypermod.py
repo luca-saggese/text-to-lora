@@ -19,7 +19,6 @@ from hyper_llm_modulator.utils.lora_formatting import convert_qkv_gate_up_lora_t
 from hyper_llm_modulator.utils.model_loading import get_tokenizer
 from hyper_llm_modulator.utils.preprocessing import preprocess_result
 from hyper_llm_modulator.utils.utils import embed_texts
-from hyper_llm_modulator.vllm_eval import eval
 
 logger = logging.getLogger()
 
@@ -288,12 +287,14 @@ def do_eval_task(
     ds_kwargs: dict = None,
     use_icl: bool = False,
 ):
+    from hyper_llm_modulator.vllm_eval import eval as vllm_eval
+
     perf_keys = ["acc", "mbpp_base_pass@1", "humaneval_base_pass@1", "rouge1_fmeasure", "rougeL_fmeasure"]
     os.makedirs(f"{save_dir}/eval_results", exist_ok=True)
     results = {eval_dataset: []}
     if save_dicts is None:
         save_dicts = [dict() for _ in lora_dirs]
-    full_results = eval(
+    full_results = vllm_eval(
         model_dir,
         lora_dirs,
         eval_dataset,

@@ -24,7 +24,6 @@ RUN uv pip install --system \
     peft \
     accelerate \
     datasets \
-    bitsandbytes \
     jupyter \
     matplotlib \
     hf_transfer \
@@ -38,6 +37,13 @@ RUN uv pip install --system \
     fasttext-wheel \
     rouge-score \
     gradio>=5.29.0
+
+# bitsandbytes wheels are only available for x86_64 Linux/Windows
+RUN if [ "$(uname -m)" = "x86_64" ]; then \
+            uv pip install --system bitsandbytes; \
+        else \
+            echo "Skipping bitsandbytes on $(uname -m): no compatible wheel available"; \
+        fi
 
 # Install evalplus from git
 RUN uv pip install --system git+https://github.com/evalplus/evalplus@1895d2f6aa8895044a7cf69defc24bd57695e885
