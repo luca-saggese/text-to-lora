@@ -1,0 +1,55 @@
+# Use the official DGX Spark vLLM image as base
+FROM scitrera/dgx-spark-vllm:0.14.0-t4
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install additional system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Install uv for faster package management
+RUN pip install --no-cache-dir uv
+
+# Copy project files
+COPY pyproject.toml setup.py README.md /app/
+
+# Install project dependencies (vllm is already in the base image)
+RUN uv pip install --system \
+    transformers==4.46.2 \
+    colorlog \
+    huggingface_hub[cli] \
+    peft \
+    accelerate \
+    datasets \
+    bitsandbytes \
+    jupyter \
+    matplotlib \
+    hf_transfer \
+    torchmetrics \
+    inflect \
+    zstandard \
+    pre-commit \
+    trl \
+    tensorboardX \
+    wandb \
+    fasttext-wheel \
+    rouge-score \
+    gradio>=5.29.0
+
+# Install evalplus from git
+RUN uv pip install --system git+https://github.com/evalplus/evalplus@1895d2f6aa8895044a7cf69defc24bd57695e885
+
+# Copy the rest of the application
+COPY . /app
+
+# Install custom packages
+RUN uv pip install --system --no-deps /app/src/fishfarm
+
+ENV PYTHONPATH=/app/src:/app/src/fishfarm
+ENV HF_HOME=/huggingface
+ENV HF_HUB_ENABLE_HF_TRANSFER=1
+
+CMD ["python", "watcher.py"]
