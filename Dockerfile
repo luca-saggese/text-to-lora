@@ -23,8 +23,8 @@ RUN uv sync
 RUN if [ "$(uname -m)" = "x86_64" ]; then \
         uv pip install vllm==0.5.4; \
     else \
-        uv pip install setuptools_scm && \
-        VLLM_TARGET_DEVICE=cuda uv pip install vllm==0.6.3 --no-build-isolation; \
+        uv pip install setuptools_scm wheel packaging && \
+        VLLM_INSTALL_PUNICA_KERNELS=1 MAX_JOBS=4 uv pip install vllm==0.6.4.post1 --no-build-isolation; \
     fi
 
 # Install flash-attn for GPU optimization (skip on ARM64)
