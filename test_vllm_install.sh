@@ -11,6 +11,14 @@ echo "=========================================="
 ARCH=$(uname -m)
 echo "Architecture: $ARCH"
 
+# Install system dependencies if needed
+echo ""
+echo "Checking system dependencies..."
+if ! dpkg -l | grep -q python3-dev; then
+    echo "Installing python3-dev..."
+    sudo apt-get update && sudo apt-get install -y python3-dev python3-distutils || true
+fi
+
 # Create temporary venv
 VENV_DIR="/tmp/vllm_test_venv"
 echo ""
