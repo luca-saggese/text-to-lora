@@ -138,9 +138,13 @@ def get_emb_model_and_fns(emb_model_name, device):
     if emb_tokenizer.pad_token_id is None:
         emb_tokenizer.pad_token_id = emb_tokenizer.eos_token_id
     task_desc_format_fn = add_full_stop
+    pooling_fn = get_pooling_fn("last_token")  # Default pooling strategy
+    
     if "SFR" in emb_model_name:
         task_desc_format_fn = apply_sfr_template
         pooling_fn = get_pooling_fn("last_token")
     elif "gte" in emb_model_name:
         pooling_fn = get_pooling_fn("cls")
+    # For other models (gemma, sentence-transformers, etc.), use default last_token pooling
+    
     return emb_model, emb_tokenizer, task_desc_format_fn, pooling_fn

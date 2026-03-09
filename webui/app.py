@@ -4,6 +4,7 @@ import shutil
 import string
 import threading
 import time
+import traceback
 from functools import partial
 from typing import List, Optional, Tuple, Dict, Generator, Callable
 
@@ -14,7 +15,15 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, TextIteratorStream
 
 from hyper_llm_modulator.hyper_modulator import load_hypermod_checkpoint
 from hyper_llm_modulator.utils.eval_hypermod import gen_and_save_lora
+from hyper_llm_modulator.utils.model_loading import get_emb_model_and_fns
 
+
+# Configuration: specify which embedding model to use
+# Options: 
+#   - Alibaba (default, but buggy): "Alibaba-NLP/gte-large-en" 
+#   - Gemma: "google/gemma-2b", "google/gemma-7b", etc.
+#   - Other sentence-transformers: "sentence-transformers/all-MiniLM-L6-v2", etc.
+EMB_MODEL_NAME = os.getenv("EMB_MODEL_NAME", "Alibaba-NLP/gte-large-en")
 
 GUIDELINE = """
 # Text-to-LoRA (T2L)
@@ -287,7 +296,6 @@ def build_demo():
         # Initialize the model right away on startup
         def initialize():
             device = "cuda:0" if torch.cuda.is_available() else "cpu"
-            layer_indices = torch.arange(0, 32, dtype=torch.long, device=device)
             checkpoint_path = "trained_t2l/t2l_demo/hypermod.pt"
             t2l_dir = os.path.dirname(checkpoint_path)
             (
@@ -300,6 +308,15 @@ def build_demo():
                 task_desc_format_fn,
                 pooling_fn,
             ) = load_hypermod_checkpoint(checkpoint_path, device)
+            
+            # Override embedding model if configured differently
+            if EMB_MODEL_NAME != getattr(args, 'emb_model', None):
+                print(f"Overriding embedding model: {getattr(args, 'emb_model', None)} -> {EMB_MODEL_NAME}")
+                emb_model, emb_tokenizer, task_desc_format_fn, pooling_fn = (
+                    get_emb_model_and_fns(EMB_MODEL_NAME, device)
+                )
+            
+            layer_indices = torch.arange(0, hypermod.max_num_layers, dtype=torch.long, device=device)
             peft_config = PeftConfig.from_pretrained(t2l_dir)
             _gen_and_save_lora = partial(
                 gen_and_save_lora,
@@ -369,6 +386,7 @@ def build_demo():
                 )
             except Exception as e:
                 print(f"Error generating LoRA: {str(e)}")
+                traceback.print_exc()
                 return (
                     "",
                     "",
