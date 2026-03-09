@@ -23,6 +23,7 @@ RUN uv sync
 RUN if [ "$(uname -m)" = "x86_64" ]; then \
         uv pip install vllm==0.5.4; \
     else \
+        uv pip install setuptools_scm && \
         VLLM_TARGET_DEVICE=cuda uv pip install vllm==0.6.3 --no-build-isolation; \
     fi
 
