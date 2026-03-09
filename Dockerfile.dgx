@@ -1,5 +1,5 @@
 # Use the official DGX Spark vLLM image as base
-FROM scitrera/dgx-spark-vllm
+FROM scitrera/dgx-spark-vllm:0.15.0-t4
 
 ENV DEBIAN_FRONTEND=noninteractive
 
