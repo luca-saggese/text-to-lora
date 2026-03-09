@@ -11,11 +11,20 @@ echo "=========================================="
 ARCH=$(uname -m)
 echo "Architecture: $ARCH"
 
+# Create temporary venv
+VENV_DIR="/tmp/vllm_test_venv"
+echo ""
+echo "Creating temporary venv at $VENV_DIR..."
+rm -rf "$VENV_DIR"
+python3 -m venv "$VENV_DIR"
+source "$VENV_DIR/bin/activate"
+
 # Detect if uv is available, otherwise use pip
 if command -v uv &> /dev/null; then
     PIP="uv pip"
 else
     PIP="pip"
+    pip install --upgrade pip
 fi
 echo "Using: $PIP"
 
@@ -64,3 +73,10 @@ echo ""
 echo "=========================================="
 echo "Installation successful!"
 echo "=========================================="
+
+# Cleanup
+echo ""
+echo "Cleaning up temporary venv..."
+deactivate
+rm -rf "$VENV_DIR"
+echo "Done!"
