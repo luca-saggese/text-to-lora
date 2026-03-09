@@ -19,6 +19,13 @@ RUN python -m pip install --no-cache-dir --upgrade pip uv
 COPY pyproject.toml setup.py README.md /app/
 RUN uv sync
 
+# Install vllm with CUDA support (architecture-specific)
+RUN if [ "$(uname -m)" = "x86_64" ]; then \
+        uv pip install vllm==0.5.4; \
+    else \
+        VLLM_TARGET_DEVICE=cuda uv pip install vllm==0.6.3 --no-build-isolation; \
+    fi
+
 # Install flash-attn for GPU optimization (skip on ARM64)
 RUN if [ "$(uname -m)" = "x86_64" ]; then \
     uv pip install https://github.com/Dao-AILab/flash-attention/releases/download/v2.6.3/flash_attn-2.6.3+cu123torch2.3cxx11abiFALSE-cp310-cp310-linux_x86_64.whl; \
