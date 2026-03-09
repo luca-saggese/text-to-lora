@@ -21,8 +21,8 @@ RUN python -m pip install --no-cache-dir --upgrade pip uv
 COPY pyproject.toml setup.py README.md /app/
 RUN uv sync
 
-# Copy test script
-COPY test_vllm_install.sh /app/
-RUN chmod +x /app/test_vllm_install.sh
+# Copy test scripts
+COPY test_vllm_install.sh test_vllm_docker.sh /app/
+RUN chmod +x /app/test_vllm_install.sh /app/test_vllm_docker.sh
 
 CMD ["/bin/bash"]
